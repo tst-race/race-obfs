@@ -57,7 +57,7 @@ RACE_COMPILE_IMAGE_NAME="race-sdk"
 LOCAL=false
 
 # Version values
-RACE_VERSION="main"
+RACE_VERSION="2.6.0"
 
 COMMAND="./build_artifacts.sh"
 
