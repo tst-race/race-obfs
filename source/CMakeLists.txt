@@ -168,21 +168,21 @@ install(
 if(ANDROID)
     if ("${TARGET_ARCHITECTURE}" STREQUAL "ANDROID_x86_64")
         add_custom_command(TARGET PluginObfs POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_SOURCE_DIR}/../plugin/artifacts/android-x86_64-client/PluginObfs/
-            COMMAND ${CMAKE_COMMAND} -E copy ${PLUGIN_FILE} ${CMAKE_CURRENT_SOURCE_DIR}/../plugin/artifacts/android-x86_64-client/PluginObfs/
-            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/manifest.json ${CMAKE_CURRENT_SOURCE_DIR}/../plugin/artifacts/android-x86_64-client/PluginObfs/
+            COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_SOURCE_DIR}/../kit/artifacts/android-x86_64-client/PluginObfs/
+            COMMAND ${CMAKE_COMMAND} -E copy ${PLUGIN_FILE} ${CMAKE_CURRENT_SOURCE_DIR}/../kit/artifacts/android-x86_64-client/PluginObfs/
+            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/manifest.json ${CMAKE_CURRENT_SOURCE_DIR}/../kit/artifacts/android-x86_64-client/PluginObfs/
         )
         set_property(DIRECTORY PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
-            ${CMAKE_CURRENT_SOURCE_DIR}/../plugin/artifacts/android-x86_64-client/
+            ${CMAKE_CURRENT_SOURCE_DIR}/../kit/artifacts/android-x86_64-client/
         )
     else()
         add_custom_command(TARGET PluginObfs POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_SOURCE_DIR}/../plugin/artifacts/android-arm64-v8a-client/PluginObfs/
-            COMMAND ${CMAKE_COMMAND} -E copy ${PLUGIN_FILE} ${CMAKE_CURRENT_SOURCE_DIR}/../plugin/artifacts/android-arm64-v8a-client/PluginObfs/
-            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/manifest.json ${CMAKE_CURRENT_SOURCE_DIR}/../plugin/artifacts/android-arm64-v8a-client/PluginObfs/
+            COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_SOURCE_DIR}/../kit/artifacts/android-arm64-v8a-client/PluginObfs/
+            COMMAND ${CMAKE_COMMAND} -E copy ${PLUGIN_FILE} ${CMAKE_CURRENT_SOURCE_DIR}/../kit/artifacts/android-arm64-v8a-client/PluginObfs/
+            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/manifest.json ${CMAKE_CURRENT_SOURCE_DIR}/../kit/artifacts/android-arm64-v8a-client/PluginObfs/
         )
         set_property(DIRECTORY PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
-            ${CMAKE_CURRENT_SOURCE_DIR}/../plugin/artifacts/android-arm64-v8a-client/
+            ${CMAKE_CURRENT_SOURCE_DIR}/../kit/artifacts/android-arm64-v8a-client/
         )
     endif()
 else()
@@ -193,12 +193,12 @@ else()
     endif()
 
     add_custom_command(TARGET PluginObfs POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_SOURCE_DIR}/../plugin/artifacts/${NODE_TYPE}-server/PluginObfs/
-        COMMAND ${CMAKE_COMMAND} -E copy ${PLUGIN_FILE} ${CMAKE_CURRENT_SOURCE_DIR}/../plugin/artifacts/${NODE_TYPE}-server/PluginObfs/
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/manifest.json ${CMAKE_CURRENT_SOURCE_DIR}/../plugin/artifacts/${NODE_TYPE}-server/PluginObfs/
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_SOURCE_DIR}/../kit/artifacts/${NODE_TYPE}-server/PluginObfs/
+        COMMAND ${CMAKE_COMMAND} -E copy ${PLUGIN_FILE} ${CMAKE_CURRENT_SOURCE_DIR}/../kit/artifacts/${NODE_TYPE}-server/PluginObfs/
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/manifest.json ${CMAKE_CURRENT_SOURCE_DIR}/../kit/artifacts/${NODE_TYPE}-server/PluginObfs/
     )
     set_property(DIRECTORY PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
-        ${CMAKE_CURRENT_SOURCE_DIR}/../plugin/artifacts/${NODE_TYPE}-server/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../kit/artifacts/${NODE_TYPE}-server/
     )
 endif()
 
