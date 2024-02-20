@@ -123,11 +123,11 @@ message("LIB_PATH: ${LIB_PATH}")
 
 # install in the config gen dir
 add_custom_command(TARGET ObfsConfig POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_SOURCE_DIR}/../plugin/channels/obfs/
-    COMMAND ${CMAKE_COMMAND} -E copy ${LIB_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/../plugin/channels/obfs/
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_SOURCE_DIR}/../kit/channels/obfs/
+    COMMAND ${CMAKE_COMMAND} -E copy ${LIB_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/../kit/channels/obfs/
 )
 set_property(DIRECTORY PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/../plugin/channels/obfs
+    ${CMAKE_CURRENT_SOURCE_DIR}/../kit/channels/obfs
 )
 
 
