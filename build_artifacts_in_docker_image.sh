@@ -53,7 +53,7 @@ FILEPATH="$(pwd)"
 RACE_CONTAINER_REGISTRY="ghcr.io"
 RACE_GITHUB_GROUP="tst-race"
 RACE_COMPILE_IMAGE_REPO="race-core"
-RACE_COMPILE_IMAGE_NAME="race-sdk"
+RACE_COMPILE_IMAGE_NAME="raceboat-compile"
 LOCAL=false
 
 # Version values

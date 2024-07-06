@@ -73,6 +73,7 @@ else()
     list(APPEND GOENV GOPATH=/go:/usr/local/go:/usr/local/go/src/shims/:${COMMS_PLUGIN_BINDINGS_GOLANG_GOPATH})
     if ("${TARGET_ARCHITECTURE}" STREQUAL "LINUX_arm64-v8a")
         list(APPEND CGO_CXXFLAGS "-I/linux/arm64-v8a/include")
+        list(APPEND CGO_CXXFLAGS "-I/linux/arm64-v8a/include/race/common")
         list(APPEND CGO_LDFLAGS "-L/linux/arm64-v8a/lib")
         list(APPEND GOENV
             "CC=clang -target aarch64-linux-gnu"
