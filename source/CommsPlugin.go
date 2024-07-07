@@ -24,6 +24,7 @@ import "C"
 import (
 	"bytes"
 	"encoding/binary"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -31,6 +32,7 @@ import (
 	"net"
 	// "net/http"
 	"git.torproject.org/pluggable-transports/goptlib.git"
+	"github.com/google/uuid"
 	"github.com/RACECAR-GU/obfsX/transports"
 	"github.com/RACECAR-GU/obfsX/transports/base"
 	"github.com/RACECAR-GU/obfsX/transports/obfs4"
@@ -44,6 +46,7 @@ import (
 	// "github.com/RACECAR-GU/obfsX/transports/obfs5"
 	"github.com/RACECAR-GU/obfsX/common/log"
 	"github.com/RACECAR-GU/obfsX/common/ntor"
+	"github.com/RACECAR-GU/obfsX/common/drbg"
 	"math"
 	"math/rand"
 	"unsafe"
@@ -467,6 +470,46 @@ type ObfsProfile struct {
 	PrivateKey string `json:"private-key"`
 }
 
+func createObfsProfile(iatMode int) (string) {
+	golog.Printf("generating new obfs")	
+
+	uuidWithHyphens := uuid.New().String()
+	uuidStr := strings.Replace(uuidWithHyphens, "-", "", -1)
+	nodeId := hex.EncodeToString([]byte("race")) + uuidStr
+	
+	keyPair, err := ntor.NewKeypair(false)
+	if err != nil {
+		golog.Printf("error generating new key pair: %s", err.Error())
+		return ""
+	}
+
+	seedBytes, err := drbg.NewSeed()
+	if err != nil {
+		golog.Printf("error generating new DRBG seed: %s", err.Error())
+		return ""
+	}
+
+	publicKey := keyPair.Public().Hex()
+	privateKey := keyPair.Private().Hex()
+	drbgSeed := seedBytes.Hex()
+
+	// format: {"node-id":"id","private-key":"key","public-key":"key","drbg-seed":"seed","iat-mode":mode}
+	var sb strings.Builder
+	sb.WriteString("{\"node-id\":\"")
+	sb.WriteString(nodeId)
+	sb.WriteString("\",\"private-key\":\"")
+	sb.WriteString(privateKey)
+	sb.WriteString("\",\"public-key\":\"")
+	sb.WriteString(publicKey)
+	sb.WriteString("\",\"drbg-seed\":\"")
+	sb.WriteString(drbgSeed)
+	sb.WriteString("\",\"iat-mode\":")
+	sb.WriteString(strconv.Itoa(iatMode))
+	sb.WriteString("}")
+	config := sb.String()
+	return config
+}
+
 // Set the Sdk object and perform minimum work to
 // be able to respond to incoming calls.
 func (plugin *overwrittenMethodsOnPluginObfs) Init(pluginConfig commsshims.PluginConfig) commsshims.PluginResponse {
@@ -489,13 +532,19 @@ func (plugin *overwrittenMethodsOnPluginObfs) Init(pluginConfig commsshims.Plugi
 	linkProfilesFile := plugin.sdk.ReadFile(filename)
 	logDebug("Parsing config file ", filename)
 
-	fileContents := []byte{}
-	for idx := 0; idx < int(linkProfilesFile.Size()); idx++ {
-		fileContents = append(fileContents, linkProfilesFile.Get(idx))
-	}
-
 	var obfsProfile ObfsProfile
+	var fileContents []byte
+	if (linkProfilesFile.Size() > 0) {
+		fileContents = []byte{}
+		for idx := 0; idx < int(linkProfilesFile.Size()); idx++ {
+			fileContents = append(fileContents, linkProfilesFile.Get(idx))
+		}
+	} else {
+		fileContents = []byte(createObfsProfile(0))
+	}
 	err := json.Unmarshal(fileContents, &obfsProfile)
+	logDebug("FileContents: ", string(fileContents));
+
 
 	myPersona := plugin.sdk.GetActivePersona()
 
